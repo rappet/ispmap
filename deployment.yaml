@@ -1,0 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ispmap
+spec:
+  selector:
+    app: ispmap
+  ports:
+  - protocol: TCP
+    port: 8080
+    nodePort: 30001
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ispmap
+spec:
+  selector:
+    matchLabels:
+      app: ispmap
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ispmap
+    spec:
+      containers:
+        - name: ispmap
+          image: ispmap:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
